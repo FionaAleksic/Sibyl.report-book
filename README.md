@@ -1,6 +1,6 @@
 # Sibyl.report-book
 
-Erstes eigenständiges Pre-Release 0.1.0-rc.2 für Ausbildungs-Wochenberichte. Funktionskern: Tätigkeiten mit Datum und Viertelstundenvalidierung erfassen, ISO-Kalenderwoche führen, Minuten summieren und als Markdown exportieren. Enthält Tests und den reproduzierbaren Java-21-Build: `bash scripts/build-release.sh`.
+Erstes eigenständiges Pre-Release 0.1.0-rc.3 für Ausbildungs-Wochenberichte. Funktionskern: Tätigkeiten mit Datum und Viertelstundenvalidierung erfassen, ISO-Kalenderwoche führen, Minuten summieren und als Markdown exportieren. Enthält Tests und den reproduzierbaren Java-21-Build: `bash scripts/build-release.sh`.
 
 Der fachliche Bedarf ist aus der Nikolauspflege-Ausbildungsumgebung bekannt, die Implementierung ist jedoch **firmenneutral**. Dieses Modul hat keine AD-Pflicht; lokale Sibyl-Benutzer oder später AD-Identitäten können über den Core-Adapter zugeordnet werden.
 
@@ -9,3 +9,7 @@ Der fachliche Bedarf ist aus der Nikolauspflege-Ausbildungsumgebung bekannt, die
 ## Addon-eigene Installation
 
 `deployment.json` registriert mit `publish-ui` den eigenständigen Berichtsheft-Reiter. Keine hardcodierte Installationslogik im Core. Die Vorschau ist ausschließlich flüchtig; für Speicherung/Freigabe wird ein API-/Datenbankadapter benötigt.
+
+## RC.3 isolierter Worker
+
+Enthält nun `backend/worker.jar` und `migrations/V001__training_reports.sql` in eigener ZIP. Für die Installation: `bubblewrap` und funktionierende Benutzer-/Netzwerk-Namespaces auf App-Host sowie eine vorab mit ausschließlich eigenen Schemarechten bereitgestellte Datenbankidentität `sibyl_ext_report_book`. Bei fehlenden Voraussetzungen wird nicht installiert. Worker hat keine DB-Credentials; er validiert und summiert Zeiten über eine AF_UNIX-API.

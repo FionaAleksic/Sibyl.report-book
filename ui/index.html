@@ -5,12 +5,29 @@
 <div class="grid"><label>Tag <input type="date" id="day"></label><label>Minuten (15er-Schritte) <input type="number" id="minutes" min="15" max="720" step="15" value="90"></label></div>
 <label>Fachbereich <input id="category" value="Systemintegration"></label>
 <label>Tätigkeit <textarea id="activity">Serverkonfiguration und Dokumentation</textarea></label>
-<button id="add">Tätigkeit hinzufügen</button> <button id="export">Markdown erzeugen</button>
+<button id="add">Tätigkeit hinzufügen</button> <button id="export">Markdown erzeugen</button> <button id="worker">Backend berechnen</button>
 <p id="status" role="status"></p><h2>Wochenübersicht</h2><ul id="entries"></ul>
 <h2>Ausgabe</h2><textarea id="markdown" readonly placeholder="Noch keine Ausgabe"></textarea>
 <script>
 "use strict";
 const entries=[];
+let currentWorkerRequest=0;
+document.getElementById("worker").onclick=()=>{
+ const requestId=++currentWorkerRequest;
+ window.parent.postMessage({sibyl:"invoke",requestId,method:"totalMinutes",
+   payload:{minutes:entries.map(entry=>entry.minutes)}},"*");
+ document.getElementById("status").textContent="Berechnung im Worker angefordert …";
+};
+window.addEventListener("message",event=>{
+ if(event.source!==window.parent||event.data?.sibyl!=="response"
+   ||event.data.requestId!==currentWorkerRequest)return;
+ const answer=event.data;
+ document.getElementById("status").textContent=answer.error
+   ?"Worker-Fehler: "+answer.error
+   :answer.data?.ok
+   ?"Isolierter Backend-Worker: "+answer.data.totalMinutes+" Minuten."
+   :"Worker: "+(answer.data?.error||"Unbekannter Fehler");
+});
 document.getElementById("day").value=new Date().toISOString().slice(0,10);
 document.getElementById("add").onclick=()=>{
  const day=document.getElementById("day").value,minutes=Number(document.getElementById("minutes").value),

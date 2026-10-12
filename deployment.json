@@ -1,10 +1,20 @@
 {
   "schema": 1,
   "id": "Sibyl.report-book",
-  "version": "0.1.0-rc.2",
+  "version": "0.1.0-rc.3",
   "kind": "feature",
   "dependencies": [],
   "operations": [
+    {
+      "type": "migrate-db",
+      "path": "migrations/V001__training_reports.sql",
+      "label": ""
+    },
+    {
+      "type": "register-worker",
+      "path": "backend/worker.jar",
+      "label": ""
+    },
     {
       "type": "publish-ui",
       "path": "ui/index.html",

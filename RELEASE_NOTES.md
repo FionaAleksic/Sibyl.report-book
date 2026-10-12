@@ -1,3 +1,5 @@
-# Sibyl.report-book v0.1.0-rc.2
+# Sibyl.report-book v0.1.0-rc.3
 
-Generischer Addon-Deployment-Plan, eigenständige responsive Wochenberichtoberfläche, in-memory Tätigkeitsliste und Markdown-Export. Keine dauerhafte Datenbank, kein Ausbilder-Freigabeprozess oder PDF in dieser Vorabversion.
+Backend-Worker in eigenem Java-Prozess über AF_UNIX Socket, eigenständiges SQL-Migrationsasset und addon-eigener Installationsvertrag. UI kommuniziert über die authentifizierte Capability-Bridge; kein DB-Kennwort im Worker.
+
+Scoped Datenbank sibyl_ext_report_book muss von einem berechtigten Administrator vorab bereitgestellt werden. Datenbanktabelle wird bei Installation angelegt; Speichern der Berichte durch Worker ist noch nicht möglich (DB-Broker fehlt).
