@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "Sibyl.report-book",
+  "version": "0.1.0-rc.1",
+  "name": "Berichtsheft",
+  "description": "Wöchentliche Ausbildungsberichte mit Zeitvalidierung und Markdown-Export.",
+  "type": "feature",
+  "runtime": "java21-jar",
+  "entrypoint": "org.sibyl.addons.reportbook.WeeklyReport",
+  "apiCompatibility": ">=0.1.0 <1.0.0",
+  "capabilities": [
+    "training.report.weekly",
+    "training.report.export.markdown"
+  ],
+  "requires": [
+    {
+      "id": "Sibyl.core",
+      "version": ">=0.1.0"
+    }
+  ],
+  "configurationSchema": "config.schema.json",
+  "repository": "FionaAleksic/Sibyl.report-book",
+  "releaseChannel": "prerelease",
+  "license": "MIT"
+}
