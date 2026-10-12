@@ -1,0 +1,31 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sibyl · Berichtsheft</title>
+<style>:root{color-scheme:light dark;font:15px/1.6 system-ui,sans-serif}body{max-width:1000px;margin:20px auto;padding:18px}header{display:flex;justify-content:space-between;align-items:center}a{color:inherit}input,textarea,select,button{font:inherit;padding:9px;border:1px solid #888}input,textarea{width:100%;box-sizing:border-box}textarea{min-height:135px}label{display:block;margin:12px 0}button{cursor:pointer}.sub{opacity:.75}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}@media(max-width:600px){.grid{grid-template-columns:1fr}}</style></head><body>
+<header><h1>Ausbildungsberichtsheft</h1><a href="/">← Sibyl System</a></header>
+<p class="sub">Addon-eigene Vorschau für Wochenberichte. Einträge und Ausgabe sind derzeit nur im offenen Browserfenster vorhanden, nicht dauerhaft gespeichert und nicht freigegeben.</p>
+<div class="grid"><label>Tag <input type="date" id="day"></label><label>Minuten (15er-Schritte) <input type="number" id="minutes" min="15" max="720" step="15" value="90"></label></div>
+<label>Fachbereich <input id="category" value="Systemintegration"></label>
+<label>Tätigkeit <textarea id="activity">Serverkonfiguration und Dokumentation</textarea></label>
+<button id="add">Tätigkeit hinzufügen</button> <button id="export">Markdown erzeugen</button>
+<p id="status" role="status"></p><h2>Wochenübersicht</h2><ul id="entries"></ul>
+<h2>Ausgabe</h2><textarea id="markdown" readonly placeholder="Noch keine Ausgabe"></textarea>
+<script>
+"use strict";
+const entries=[];
+document.getElementById("day").value=new Date().toISOString().slice(0,10);
+document.getElementById("add").onclick=()=>{
+ const day=document.getElementById("day").value,minutes=Number(document.getElementById("minutes").value),
+ category=document.getElementById("category").value.trim(),activity=document.getElementById("activity").value.trim(),
+ status=document.getElementById("status");
+ if(!day||!Number.isInteger(minutes)||minutes<15||minutes>720||minutes%15||!category||!activity){
+  status.textContent="Datum, Tätigkeitsbeschreibung und gültige Viertelstundenangabe erforderlich.";return;}
+ entries.push({day,minutes,category,activity});const li=document.createElement("li");li.textContent=day+" · "+minutes+" Minuten · "+category+": "+activity;
+ document.getElementById("entries").append(li);status.textContent="Hinzugefügt (nicht gespeichert).";
+};
+document.getElementById("export").onclick=()=>{
+ const safe=s=>s.replace(/\r?\n/g," ").replace(/\|/g,"\\|");
+ let out="# Ausbildungsbericht\n\n| Datum | Minuten | Bereich | Tätigkeit |\n|---|---:|---|---|\n";
+ for(const e of entries)out+="| "+e.day+" | "+e.minutes+" | "+safe(e.category)+" | "+safe(e.activity)+" |\n";
+ out+="\nGesamt: "+entries.reduce((a,b)=>a+b.minutes,0)+" Minuten\n";
+ document.getElementById("markdown").value=out;document.getElementById("status").textContent="Markdown erstellt. Inhalt manuell kopieren.";
+};
+</script></body></html>
