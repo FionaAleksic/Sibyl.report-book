@@ -1,5 +1,5 @@
-# Sibyl.report-book v0.1.0-rc.3
+# Sibyl.report-book RC.4
 
-Backend-Worker in eigenem Java-Prozess über AF_UNIX Socket, eigenständiges SQL-Migrationsasset und addon-eigener Installationsvertrag. UI kommuniziert über die authentifizierte Capability-Bridge; kein DB-Kennwort im Worker.
+Wochenberichte dauerhaft speichern, laden, bearbeiten und archivieren über den generischen Core-Records-Broker (Core >= RC.13). Wochen-/Tagesvalidierung, Markdown-Ausgabe und Zeitberechnung im isolierten Java-Worker; nach dem Speichern erfolgt Optimistic-Locking. SQL-Migration und Worker-JAR liegen weiterhin im Addon-Release und benötigen vorher eingerichtete, ausschließlich addoneigene MySQL-Rechte und bwrap-Sandbox.
 
-Scoped Datenbank sibyl_ext_report_book muss von einem berechtigten Administrator vorab bereitgestellt werden. Datenbanktabelle wird bei Installation angelegt; Speichern der Berichte durch Worker ist noch nicht möglich (DB-Broker fehlt).
+Ausbilderfreigabe, Signaturen, Teamfreigaben und PDF-Export fehlen weiterhin.

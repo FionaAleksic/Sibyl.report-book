@@ -8,7 +8,7 @@ import java.util.List;
 /** Weekly training report domain core; no hidden write to a company system. */
 public final class WeeklyReport {
     public static final String MODULE_ID="Sibyl.report-book";
-    public static final String VERSION="0.1.0-rc.3";
+    public static final String VERSION="0.1.0-rc.4";
     public record Entry(LocalDate day, int minutes, String category, String description) {
         public Entry {
             if(day == null || minutes <= 0 || minutes > 12 * 60 || minutes % 15 != 0 ||

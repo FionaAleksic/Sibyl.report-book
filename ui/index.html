@@ -1,48 +1,10 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sibyl · Berichtsheft</title>
-<style>:root{color-scheme:light dark;font:15px/1.6 system-ui,sans-serif}body{max-width:1000px;margin:20px auto;padding:18px}header{display:flex;justify-content:space-between;align-items:center}a{color:inherit}input,textarea,select,button{font:inherit;padding:9px;border:1px solid #888}input,textarea{width:100%;box-sizing:border-box}textarea{min-height:135px}label{display:block;margin:12px 0}button{cursor:pointer}.sub{opacity:.75}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}@media(max-width:600px){.grid{grid-template-columns:1fr}}</style></head><body>
-<header><h1>Ausbildungsberichtsheft</h1><a href="/">← Sibyl System</a></header>
-<p class="sub">Addon-eigene Vorschau für Wochenberichte. Einträge und Ausgabe sind derzeit nur im offenen Browserfenster vorhanden, nicht dauerhaft gespeichert und nicht freigegeben.</p>
-<div class="grid"><label>Tag <input type="date" id="day"></label><label>Minuten (15er-Schritte) <input type="number" id="minutes" min="15" max="720" step="15" value="90"></label></div>
-<label>Fachbereich <input id="category" value="Systemintegration"></label>
-<label>Tätigkeit <textarea id="activity">Serverkonfiguration und Dokumentation</textarea></label>
-<button id="add">Tätigkeit hinzufügen</button> <button id="export">Markdown erzeugen</button> <button id="worker">Backend berechnen</button>
-<p id="status" role="status"></p><h2>Wochenübersicht</h2><ul id="entries"></ul>
-<h2>Ausgabe</h2><textarea id="markdown" readonly placeholder="Noch keine Ausgabe"></textarea>
-<script>
-"use strict";
-const entries=[];
-let currentWorkerRequest=0;
-document.getElementById("worker").onclick=()=>{
- const requestId=++currentWorkerRequest;
- window.parent.postMessage({sibyl:"invoke",requestId,method:"totalMinutes",
-   payload:{minutes:entries.map(entry=>entry.minutes)}},"*");
- document.getElementById("status").textContent="Berechnung im Worker angefordert …";
-};
-window.addEventListener("message",event=>{
- if(event.source!==window.parent||event.data?.sibyl!=="response"
-   ||event.data.requestId!==currentWorkerRequest)return;
- const answer=event.data;
- document.getElementById("status").textContent=answer.error
-   ?"Worker-Fehler: "+answer.error
-   :answer.data?.ok
-   ?"Isolierter Backend-Worker: "+answer.data.totalMinutes+" Minuten."
-   :"Worker: "+(answer.data?.error||"Unbekannter Fehler");
-});
-document.getElementById("day").value=new Date().toISOString().slice(0,10);
-document.getElementById("add").onclick=()=>{
- const day=document.getElementById("day").value,minutes=Number(document.getElementById("minutes").value),
- category=document.getElementById("category").value.trim(),activity=document.getElementById("activity").value.trim(),
- status=document.getElementById("status");
- if(!day||!Number.isInteger(minutes)||minutes<15||minutes>720||minutes%15||!category||!activity){
-  status.textContent="Datum, Tätigkeitsbeschreibung und gültige Viertelstundenangabe erforderlich.";return;}
- entries.push({day,minutes,category,activity});const li=document.createElement("li");li.textContent=day+" · "+minutes+" Minuten · "+category+": "+activity;
- document.getElementById("entries").append(li);status.textContent="Hinzugefügt (nicht gespeichert).";
-};
-document.getElementById("export").onclick=()=>{
- const safe=s=>s.replace(/\r?\n/g," ").replace(/\|/g,"\\|");
- let out="# Ausbildungsbericht\n\n| Datum | Minuten | Bereich | Tätigkeit |\n|---|---:|---|---|\n";
- for(const e of entries)out+="| "+e.day+" | "+e.minutes+" | "+safe(e.category)+" | "+safe(e.activity)+" |\n";
- out+="\nGesamt: "+entries.reduce((a,b)=>a+b.minutes,0)+" Minuten\n";
- document.getElementById("markdown").value=out;document.getElementById("status").textContent="Markdown erstellt. Inhalt manuell kopieren.";
-};
-</script></body></html>
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sibyl · Berichtsheft</title><link rel="stylesheet" href="report.css"><script defer src="bridge.js"></script><script defer src="report.js"></script></head><body>
+<header><h1>Ausbildungsberichtsheft</h1><p>Wochenberichte · dauerhaft gespeichert</p></header>
+<div class="grid"><aside class="panel"><h2>Wochenübersicht</h2><button class="primary" id="new-week">+ Neue Woche</button><div id="weeks"></div><p class="hint">Berichte sind aktuell deinem Benutzerkonto zugeordnet. Eine Ausbilderfreigabe erfordert zusätzliche Rollen.</p></aside>
+<main class="panel"><div class="row"><label>Woche beginnt (Montag)<input type="date" id="monday"></label><label>Status<select id="state"><option value="DRAFT">Entwurf</option><option value="SUBMITTED">Zur Prüfung vorgemerkt</option></select></label></div>
+<h2>Tätigkeiten</h2><div class="row"><label>Tag<input type="date" id="day"></label><label>Minuten<input type="number" id="minutes" min="15" max="720" step="15" value="90"></label></div>
+<label>Bereich<input id="category" maxlength="100" value="Systemintegration"></label>
+<label>Beschreibung<textarea id="description" maxlength="4000" rows="4">Server konfigurieren und dokumentieren</textarea></label>
+<button id="add-entry">+ Tätigkeit hinzufügen</button><div class="table"><table><thead><tr><th>Datum</th><th>Min.</th><th>Bereich</th><th>Tätigkeit</th><th></th></tr></thead><tbody id="entries"></tbody></table></div>
+<p id="total">Gesamt: 0 Minuten</p><div class="buttons"><button class="primary" id="save">Woche speichern</button><button id="export">Markdown exportieren</button><button id="calculate">Im Java-Worker prüfen</button><button id="archive">Archivieren</button></div>
+<p id="status" role="status" aria-live="polite"></p><label>Markdown-Ausgabe<textarea id="markdown" rows="8" readonly></textarea></label></main></div></body></html>

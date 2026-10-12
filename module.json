@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "Sibyl.report-book",
-  "version": "0.1.0-rc.3",
+  "version": "0.1.0-rc.4",
   "name": "Berichtsheft",
   "description": "Wöchentliche Ausbildungsberichte mit Zeitvalidierung und Markdown-Export.",
   "type": "feature",
