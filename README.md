@@ -1,5 +1,7 @@
 # Sibyl.report-book
 
+> **Release-Stand (13.10.2026):** neueste veröffentlichte Vorabversion `v0.1.0-rc.4` · [Core-Kompatibilität und Addon-Browser](docs/CORE-COMPATIBILITY.md). Die Anzeige im Browser installiert keine Addons. Ältere Versionsbeispiele im folgenden Text bleiben als historische Dokumentation erhalten.
+
 Erstes eigenständiges Pre-Release 0.1.0-rc.3 für Ausbildungs-Wochenberichte. Funktionskern: Tätigkeiten mit Datum und Viertelstundenvalidierung erfassen, ISO-Kalenderwoche führen, Minuten summieren und als Markdown exportieren. Enthält Tests und den reproduzierbaren Java-21-Build: `bash scripts/build-release.sh`.
 
 Der fachliche Bedarf ist aus der Nikolauspflege-Ausbildungsumgebung bekannt, die Implementierung ist jedoch **firmenneutral**. Dieses Modul hat keine AD-Pflicht; lokale Sibyl-Benutzer oder später AD-Identitäten können über den Core-Adapter zugeordnet werden.
