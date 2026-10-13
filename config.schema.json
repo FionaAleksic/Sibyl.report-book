@@ -10,17 +10,20 @@
         30,
         60
       ],
-      "default": 15
+      "default": 15,
+      "title": "Kleinste Zeitangabe (Minuten)"
     },
     "allowMarkdownExport": {
       "type": "boolean",
-      "default": true
+      "default": true,
+      "title": "Markdown-Export erlauben"
     },
     "weeklyTargetMinutes": {
       "type": "integer",
       "minimum": 0,
       "maximum": 10080,
-      "default": 2400
+      "default": 2400,
+      "title": "Wöchentliche Zielzeit (Minuten)"
     }
   }
 }
