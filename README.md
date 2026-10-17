@@ -1,17 +1,15 @@
 # Sibyl.report-book
 
-> **Release-Stand (13.10.2026):** neueste veröffentlichte Vorabversion `v0.1.0-rc.4` · [Core-Kompatibilität und Addon-Browser](docs/CORE-COMPATIBILITY.md). Die Anzeige im Browser installiert keine Addons. Ältere Versionsbeispiele im folgenden Text bleiben als historische Dokumentation erhalten.
+**Test-Integration 0.7.0** – Ausbildungsnachweise für Sibyl System.
 
-Erstes eigenständiges Pre-Release 0.1.0-rc.3 für Ausbildungs-Wochenberichte. Funktionskern: Tätigkeiten mit Datum und Viertelstundenvalidierung erfassen, ISO-Kalenderwoche führen, Minuten summieren und als Markdown exportieren. Enthält Tests und den reproduzierbaren Java-21-Build: `bash scripts/build-release.sh`.
+- Provider-ID: `Sibyl.report-book`, Typ: `report-book`.
+- Abhängigkeit: `Sibyl.ad`.
+- Daten: `sibyl_report_entries`.
+- API: `/api/v1/addons/Sibyl.report-book/entries`, `/entries/{id}/submit`, `/entries/{id}/review`.
+- Workflow: `DRAFT` → `SUBMITTED` → `APPROVED` oder `RETURNED`; zurückgegebene Einträge können überarbeitet werden.
+- Berechtigungen: Benutzer sehen und ändern nur eigene Entwürfe; Administratoren können fremde eingereichte Nachweise freigeben/zurückgeben, keine Selbstfreigabe.
+- Administrator-Konfiguration: `minMinutes`, `maxMinutes`, `allowFutureEntries`.
 
-Der fachliche Bedarf ist aus der Nikolauspflege-Ausbildungsumgebung bekannt, die Implementierung ist jedoch **firmenneutral**. Dieses Modul hat keine AD-Pflicht; lokale Sibyl-Benutzer oder später AD-Identitäten können über den Core-Adapter zugeordnet werden.
+Code unter `Addons/Sibyl.report-book/`; wird mit Sibyl-Core kompiliert, **keine unabhängige GitHub-Release-Installation**. Migration der DB im Core (`V7`).
 
-**Aktuell nicht live aktivierbar:** RC.7 hat noch keine Plugin-Runtime. Die spätere Version benötigt Persistenz, Benutzer-/Ausbilder-Rollen, Freigabe-Workflow, Prüfprotokoll, UI und PDF-Ausgabe. Der RC.7-Addon-Katalog enthält dieses neue Repository zudem noch nicht; dazu ist ein gesondertes Core-Katalogupdate erforderlich. Keine Produktivdaten verändert.
-
-## Addon-eigene Installation
-
-`deployment.json` registriert mit `publish-ui` den eigenständigen Berichtsheft-Reiter. Keine hardcodierte Installationslogik im Core. Die Vorschau ist ausschließlich flüchtig; für Speicherung/Freigabe wird ein API-/Datenbankadapter benötigt.
-
-## RC.3 isolierter Worker
-
-Enthält nun `backend/worker.jar` und `migrations/V001__training_reports.sql` in eigener ZIP. Für die Installation: `bubblewrap` und funktionierende Benutzer-/Netzwerk-Namespaces auf App-Host sowie eine vorab mit ausschließlich eigenen Schemarechten bereitgestellte Datenbankidentität `sibyl_ext_report_book`. Bei fehlenden Voraussetzungen wird nicht installiert. Worker hat keine DB-Credentials; er validiert und summiert Zeiten über eine AF_UNIX-API.
+Stand: Entwicklungs-Build kompiliert; Live-Abnahme und Deployment stehen aus.
