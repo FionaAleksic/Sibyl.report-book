@@ -81,9 +81,17 @@ export default function ReportBookPage({credentials,admin}:{credentials:Credenti
    method:'PUT',body:JSON.stringify(form)});setSelected(w);setForm(toDraft(w))},'Änderungen gespeichert.');
  }
  async function submit(){
-  if(!selected)return;
-  await action(async()=>{const w=await request<Week>(base+'/weeks/'+selected.id+'/submit',
-   credentials,{method:'POST'});setSelected(w);setForm(toDraft(w))},'Woche zur Prüfung eingereicht.');
+  if(!selected||!form)return;
+  const current=selected;
+  const draft=form;
+  await action(async()=>{
+   if(JSON.stringify(draft)!==JSON.stringify(toDraft(current))){
+    await request<Week>(base+'/weeks/'+current.id,credentials,{
+     method:'PUT',body:JSON.stringify(draft)});
+   }
+   const w=await request<Week>(base+'/weeks/'+current.id+'/submit',credentials,{method:'POST'});
+   setSelected(w);setForm(toDraft(w));
+  },'Woche gespeichert und zur Prüfung eingereicht.');
  }
  async function review(decision:'APPROVED'|'RETURNED'){
   if(!selected)return;
@@ -198,7 +206,7 @@ export default function ReportBookPage({credentials,admin}:{credentials:Credenti
        <div className="sibyl-inline-fields">
         {editable&&<button className="primary" disabled={busy}>Entwurf speichern</button>}
         {editable&&<button type="button" className="secondary" disabled={busy||!me?.trainee||!me.assignedTrainer}
-         onClick={()=>void submit()}>Zur Prüfung einreichen</button>}
+         onClick={()=>void submit()}>Speichern und einreichen</button>}
         <button type="button" className="secondary" onClick={()=>window.print()}>Drucken / als PDF speichern</button>
        </div>
       </form>
