@@ -1,0 +1,53 @@
+/* Workflow addons share Sibyl's squared, utilitarian design. */
+.sibyl-addon-section{border:1px solid var(--border,#3a414a);padding:18px;margin:20px 0;background:var(--panel,#141a21)}
+.sibyl-addon-section h2{font-size:1.18rem;margin:0 0 14px}
+.sibyl-addon-section h3{font-size:1rem;margin:14px 0 8px}
+.sibyl-inline-fields{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin:10px 0}
+.sibyl-inline-fields h2{margin:0 20px 0 0}
+.sibyl-inline-fields label{display:flex;flex-direction:column;gap:6px;min-width:130px}
+.sibyl-addon-section input,.sibyl-addon-section textarea{border:1px solid #657080;background:transparent;color:inherit;padding:9px;max-width:100%;border-radius:0;font:inherit}
+.sibyl-addon-section input[type=number]{max-width:160px}
+.sibyl-addon-section button{border-radius:0;cursor:pointer}
+.sibyl-addon-section button:disabled{opacity:.5;cursor:not-allowed}
+.sibyl-table{width:100%;border-collapse:collapse;margin-top:12px}
+.sibyl-table th,.sibyl-table td{text-align:left;border-bottom:1px solid #515966;padding:10px}
+.sibyl-table th{font-size:.85rem;text-transform:uppercase;letter-spacing:.02em}
+.sibyl-people{display:flex;flex-direction:column;gap:6px;max-height:260px;overflow-y:auto}
+.sibyl-people>div{display:flex;gap:20px;align-items:center;justify-content:space-between;border-bottom:1px solid #424852;padding:6px 0}
+.sibyl-report-form{display:flex;flex-direction:column;gap:14px}
+.sibyl-report-form>label,.sibyl-review>label{display:flex;flex-direction:column;gap:6px}
+.sibyl-report-items{margin-top:20px;display:flex;flex-direction:column;gap:12px}
+.sibyl-report-item{padding:16px;border:1px solid #525b66}
+.sibyl-report-item h3{margin:0}
+.sibyl-report-description{white-space:pre-wrap;overflow-wrap:anywhere}
+.sibyl-review{border-top:1px solid #525b66;margin-top:14px;padding-top:12px}
+.sibyl-review textarea{width:100%}
+@media(max-width:600px){.sibyl-table{font-size:.85rem}.sibyl-table td,.sibyl-table th{padding:5px}}
+
+/* Sibyl report-book v2 */
+.sibyl-reportbook button,.sibyl-reportbook input,.sibyl-reportbook textarea,.sibyl-reportbook select,
+.sibyl-reportbook fieldset{border-radius:0}
+.sibyl-report-tabs{margin:16px 0;gap:10px}
+.sibyl-report-layout{display:grid;grid-template-columns:minmax(220px,280px) minmax(0,1fr);gap:18px;align-items:start}
+.sibyl-report-week{display:flex;flex-direction:column;text-align:left;gap:4px;padding:12px;width:100%;
+ border:1px solid var(--border,#808080);background:transparent;color:inherit;cursor:pointer;margin-top:9px}
+.sibyl-report-week.selected{border-left:4px solid var(--accent,#687bb1)}
+.sibyl-report-week span,.sibyl-report-week small{font-size:.85em;opacity:.78}
+.sibyl-report-status{display:inline-block;padding:5px 9px;border:1px solid currentColor;font-size:.83em}
+.sibyl-report-status.approved{color:#207853}
+.sibyl-report-status.returned{color:#ab542b}
+.sibyl-report-status.submitted{color:#496ab8}
+.sibyl-report-days fieldset{border:1px solid var(--border,#9a9a9a);padding:13px;margin:15px 0}
+.sibyl-report-days legend{padding:0 6px;font-weight:600}
+.sibyl-report-days textarea,.sibyl-reportbook textarea{width:100%;box-sizing:border-box}
+.sibyl-report-feedback{border-left:3px solid #b47436;padding:12px;margin:16px 0;background:var(--panel,#f2f2f2)}
+.sibyl-report-profile-form{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin:16px 0}
+.sibyl-report-profile-form>label:first-child{min-width:240px}
+.sibyl-report-profile-form>label:not(:first-child){white-space:nowrap}
+.sibyl-report-history{margin-top:20px;padding:12px;border-top:1px solid var(--border,#999)}
+@media(max-width:860px){.sibyl-report-layout{grid-template-columns:1fr}}
+@media print{.sidebar,.topbar,.footer,.sibyl-report-tabs,.sibyl-report-list,
+ .sibyl-reportbook button,.sibyl-report-profile-form{display:none!important}
+ .sibyl-report-layout{display:block}.sibyl-report-edit{border:0!important}
+ .sibyl-reportbook textarea{border:0;resize:none;overflow:visible}
+ .main{margin:0!important}.content{padding:0!important}}
